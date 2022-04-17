@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "sorl.thumbnail",
     "import_export",
+    "corsheaders",
     "sponsor",
     "program",
     "news",
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",    # CORS 관련 추가
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -255,3 +257,7 @@ ALLOWED_URL_SCHEMES = [
     "vnc",
     "xmpp",
 ]
+
+# CORS Header
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
