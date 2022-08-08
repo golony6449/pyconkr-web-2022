@@ -1,10 +1,8 @@
 name: Testing pyconweb2022
 
 on:
-  push:
-    branches: [main]
   pull_request:
-    branches: [main]
+    branches: [devdev]
 
 
 jobs:
@@ -21,26 +19,41 @@ jobs:
         with: 
           options: "--check --verbose"
           src: "./pyconweb2022"
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+
       - name: Install mysql common
         run: |
           sudo apt-get install -y mysql-common
+
+      # - name: Install python version
+      #   uses: gabrielfalcao/pyenv-action@v9
+      #   with:
+      #     default: "${{ matrix.python }}"
+      #     command: |
+      #       python -m pip install --upgrade pip
+      #       pip install pytest
+      #       if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Setup Virtualenv
+        run: |
+          pip install virtualenv
+
+      - name: Create Virtualenv
+        run: |
+          virtualenv pyconweb2022-zappa
+
       - name: Install dependencies
         run: |
+          source ./pyconweb2022-zappa/bin/activate
           python -m pip install --upgrade pip
           pip install pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      # Pull request dose not get the gitub action secrets
-      # this section will be applied to the deploy workflow
-      #- uses: webfactory/ssh-agent@v0.5.4
-      #  with:
-      #      ssh-private-key: ${{ secrets.GH_PYCONKR_SECRETS }}
-      #- name: update pyconkr-secretes
-      #  run: |
-      #    ./update_secrets.sh
+
       - name: Test with pytest
         run: |
+          source ./pyconweb2022-zappa/bin/activate
           pytest pyconweb2022
