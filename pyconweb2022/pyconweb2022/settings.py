@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "program",
     "news",
     "pyconemailer",
+    "content",
     "zappa_django_utils",
     "martor",
 ]
@@ -67,6 +68,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             "pyconemailer/templates",
+            "content/templates",
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -135,7 +137,7 @@ STATIC_URL = "static/"
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
 AWS_S3_SESSION_PROFILE = "pycon"
-AWS_STORAGE_BUCKET_NAME = "pyconweb2022-static"
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STATIC_S3_BUCKET")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
